@@ -65,9 +65,9 @@ As the final result, I choose KP=0.12, KI=0.009, and KD=1.8. From all my experim
 
 ![image7]
 
-Please see the video of my final result in this link:
+Please see the video of my final result below. Notice, that no rear break light can be observed in the video, since I assign throttle = 0 to reduce the speed.
 
-[Video](./final_video.mp4)
+![gif1]
 
 [//]: # (Image References)
 
@@ -78,7 +78,7 @@ Please see the video of my final result in this link:
 [image5]: ./results/Finalexperiments.png "Applying maximum range [-1,1]"
 [image6]: ./results/Finalexperiments2.png "Final result"
 [image7]: ./results/NoBreakexperiments.png "Constant throttle parameter"
-[video1]: ./final_video.mp4 "final video"
+[gif1]: ./final_result.gif "final video"
 
 
 
