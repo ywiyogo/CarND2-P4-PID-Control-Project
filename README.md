@@ -29,11 +29,20 @@ Self-Driving Car Engineer Nanodegree Program
 1. Edit the column name in visualize.py
 2. run `python visualize.py <csvfilename>`
 
+---
+
 ## Summary
 
-First, I implemented the PID error calculation and its update mechanism in *PID.cpp*. By printing out the CTE and the error value or the steering value, I can see and follow the impact of parameter changes. For the first experiment, I tuned the P parameter. After several experiments, I found out that with 0.05 as the P parameter, the vehicle can pass the first left curve. The bellow figures shows the comparison between 0.1, 0.05, and 0.2. The left graphs plots the CTE values and the right graph plots the steering values in respect to the time.
+First, I implemented the PID error calculation and its update mechanism in *PID.cpp*. By printing out the CTE and the error value or the steering value, I can see and follow the impact of parameter changes. 
+
+In order to get the optimum parameter, I've decided to tune the hyperparameters manually. 
+
+For the first experiment, I tuned the P parameter. After several experiments, I found out that with 0.05 as the P parameter, the vehicle can pass the first left curve. The bellow figures shows the comparison between 0.1, 0.05, and 0.2. The left graphs plots the CTE values and the right graph plots the steering values in respect to the time.
 
 ![image1]
+
+The figure above shows how the P-parameter itself does not enough, since the vehicle getting unstable (see the increasing oscillation of the CTE and the total error values).
+
 
 Afterwards, I started to vary the D parameter with values 1, 2, and 0.5. 0.5 as the D value causes that the current control will react half of the current error difference. It means that the vehicle cannot response a high error difference that can be caused by curves. On the other hand, if KD is equal to 2, then the vehicle is overresponsive to a small error change. Thus, I chose KP=0.05 and KD=1 as the reference to tune the I parameter.
 
@@ -43,7 +52,7 @@ The below figures shows several experiments using difference I parameters. KI=0.
 
 ![image3]
 
-With the above results, the vehicle still drives out side the road and yelow line at the curves (CTE is larger than 3.0). Thus, I try to assign a zero value for the trottle in order to slow down the vehicle if the current CTE exceeds a threshold value. Next, I need to re-tune the parameters. I found out that KP = 0.12, KD=2.1 and KI[0.002:0.005] keep the vehicle on the road. 
+With the above results, the vehicle still drives out side the road and yelow line at the curves (CTE is larger than 3.0). Thus, I try to assign a zero value for the throttle in order to slow down the vehicle if the current CTE exceeds a threshold value. Next, I need to re-tune the parameters. I found out that KP = 0.12, KD=2.1 and KI[0.002:0.005] keep the vehicle on the road. 
 
 ![image4]
 
@@ -52,10 +61,13 @@ These two figures show some refinement of the parameter tuning and limit the ste
 ![image5]
 ![image6]
 
-As the final result, I choose KP=0.12, KI=0.009, and KD=1.8. The last figures shows that even without assigning a negative trottle, the vehicle can deal with the circuit curves without leaving the road (CTE < 3.0).
+As the final result, I choose KP=0.12, KI=0.009, and KD=1.8. From all my experiments, these hyperparameters provide me the lowest total CTE in one lap. The last figures shows that even with the constant throttle value of 0.3 (no break), the vehicle can deal with the circuit curves without leaving the road (CTE < 3.0).
 
 ![image7]
 
+Please see the video of my final result in this link:
+
+[Video](./final_video.mp4)
 
 [//]: # (Image References)
 
@@ -64,8 +76,9 @@ As the final result, I choose KP=0.12, KI=0.009, and KD=1.8. The last figures sh
 [image3]: ./results/PID_experiments.png "Tuning P, D ,and I parameter"
 [image4]: ./results/PID_experiments_diffI.png "Tuning I parameter"
 [image5]: ./results/Finalexperiments.png "Applying maximum range [-1,1]"
-[image6]: ./results/Finalexperiments2.png "Tuning P parameter"
-[image7]: ./results/NoBreakexperiments.png "Tuning P parameter"
+[image6]: ./results/Finalexperiments2.png "Final result"
+[image7]: ./results/NoBreakexperiments.png "Constant throttle parameter"
+[video1]: ./final_video.mp4 "final video"
 
 
 
