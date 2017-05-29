@@ -4,7 +4,6 @@ Self-Driving Car Engineer Nanodegree Program
 ---
 
 ## Dependencies
-
 * cmake >= 3.5
  * All OSes: [click here for installation instructions](https://cmake.org/install/)
 * make >= 4.1
@@ -21,64 +20,54 @@ Self-Driving Car Engineer Nanodegree Program
 * Simulator. You can download these from the [project intro page](https://github.com/udacity/CarND-PID-Control-Project/releases) in the classroom.
 
 ## Basic Build Instructions
-
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./pid`. 
 
-## Editor Settings
+## Basic Plot Visualization Instructions
+1. Edit the column name in visualize.py
+2. run `python visualize.py <csvfilename>`
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
+## Summary
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+First, I implemented the PID error calculation and its update mechanism in *PID.cpp*. By printing out the CTE and the error value or the steering value, I can see and follow the impact of parameter changes. For the first experiment, I tuned the P parameter. After several experiments, I found out that with 0.05 as the P parameter, the vehicle can pass the first left curve. The bellow figures shows the comparison between 0.1, 0.05, and 0.2. The left graphs plots the CTE values and the right graph plots the steering values in respect to the time.
 
-## Code Style
+![image1]
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+Afterwards, I started to vary the D parameter with values 1, 2, and 0.5. 0.5 as the D value causes that the current control will react half of the current error difference. It means that the vehicle cannot response a high error difference that can be caused by curves. On the other hand, if KD is equal to 2, then the vehicle is overresponsive to a small error change. Thus, I chose KP=0.05 and KD=1 as the reference to tune the I parameter.
 
-## Project Instructions and Rubric
+![image2]
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+The below figures shows several experiments using difference I parameters. KI=0.001 (see green and blue lines) generates a good results compared to 0.0001 (orange line).
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+![image3]
 
-## Hints!
+With the above results, the vehicle still drives out side the road and yelow line at the curves (CTE is larger than 3.0). Thus, I try to assign a zero value for the trottle in order to slow down the vehicle if the current CTE exceeds a threshold value. Next, I need to re-tune the parameters. I found out that KP = 0.12, KD=2.1 and KI[0.002:0.005] keep the vehicle on the road. 
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
+![image4]
 
-## Call for IDE Profiles Pull Requests
+These two figures show some refinement of the parameter tuning and limit the steering value between range -1 and 1. We can observe the steering values of these figures, that by increasing the I-parameter , we can control the vehicle to be more stable.
 
-Help your fellow students!
+![image5]
+![image6]
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
+As the final result, I choose KP=0.12, KI=0.009, and KD=1.8. The last figures shows that even without assigning a negative trottle, the vehicle can deal with the circuit curves without leaving the road (CTE < 3.0).
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
+![image7]
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
 
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
+[//]: # (Image References)
 
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
+[image1]: ./results/P_experiments.png "Tuning P parameter"
+[image2]: ./results/PD_experiments.png "Tuning Pand D parameter"
+[image3]: ./results/PID_experiments.png "Tuning P, D ,and I parameter"
+[image4]: ./results/PID_experiments_diffI.png "Tuning I parameter"
+[image5]: ./results/Finalexperiments.png "Applying maximum range [-1,1]"
+[image6]: ./results/Finalexperiments2.png "Tuning P parameter"
+[image7]: ./results/NoBreakexperiments.png "Tuning P parameter"
 
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
+
+
+
+
