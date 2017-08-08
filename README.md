@@ -41,7 +41,7 @@ For the first experiment, I tuned the P parameter. After several experiments, I 
 
 ![image1]
 
-The figure above shows how the P-parameter itself does not enough, since the vehicle getting unstable (see the increasing oscillation of the CTE and the total error values).
+The figure above shows how the P-parameter itself isn't enough to reach the stability. We see that the vehicle is getting unstable (see the increasing oscillation of the CTE and the total error values).
 
 
 Afterwards, I started to vary the D parameter with values 1, 2, and 0.5. 0.5 as the D value causes that the current control will react half of the current error difference. It means that the vehicle cannot response a high error difference that can be caused by curves. On the other hand, if KD is equal to 2, then the vehicle is over-responsive to a small error change. Thus, I chose KP=0.05 and KD=1 as the reference to tune the I parameter.
